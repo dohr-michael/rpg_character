@@ -1,7 +1,7 @@
 package news
 
 import org.joda.time.DateTime
-import utils.apis.CrudModel
+import utils.crud.CrudModel
 
 /**
   * @author michaeldohr

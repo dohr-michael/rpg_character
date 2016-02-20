@@ -3,8 +3,8 @@ package users
 import context.{Futures, Neo4jConfigurations}
 import org.anormcypher.CypherParser._
 import org.anormcypher.{Cypher, NeoNode}
-import utils.repositories.CrudRepository
-import utils.security.Auth0UserProfile
+import utils.auth0.{Auth0SecurityUser, Auth0UserProfile}
+import utils.crud.CrudRepository
 import utils.services.ServiceResult
 
 import scala.concurrent.Future
@@ -31,7 +31,7 @@ trait DefaultUsersRepositoryComponent extends UsersRepositoryComponent {
 
   override val usersServices = new UsersServices {
 
-    override def all(implicit user: Auth0UserProfile): Future[ServiceResult[List[User]]] = {
+    override def all(implicit user: Auth0SecurityUser): Future[ServiceResult[List[User]]] = {
       Cypher(
         """
         MATCH (u: User)
@@ -44,12 +44,12 @@ trait DefaultUsersRepositoryComponent extends UsersRepositoryComponent {
       )
     }
 
-    override def one(id: String)(implicit user: Auth0UserProfile): Future[ServiceResult[User]] = ???
+    override def one(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[User]] = ???
 
-    override def update(id: String, value: User)(implicit user: Auth0UserProfile): Future[ServiceResult[User]] = ???
+    override def update(id: String, value: User)(implicit user: Auth0SecurityUser): Future[ServiceResult[User]] = ???
 
-    override def delete(id: String)(implicit user: Auth0UserProfile): Future[ServiceResult[Unit]] = ???
+    override def delete(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[Unit]] = ???
 
-    override def create(value: User)(implicit user: Auth0UserProfile): Future[ServiceResult[User]] = ???
+    override def create(value: User)(implicit user: Auth0SecurityUser): Future[ServiceResult[User]] = ???
   }
 }

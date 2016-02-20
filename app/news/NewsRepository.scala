@@ -5,8 +5,8 @@ import org.anormcypher.Cypher
 import org.anormcypher.CypherParser._
 import org.joda.time.DateTime
 import play.api.Logger
-import utils.repositories.CrudRepository
-import utils.security.Auth0UserProfile
+import utils.auth0.{Auth0SecurityUser, Auth0UserProfile}
+import utils.crud.CrudRepository
 import utils.services.{InvalidRequestError, ServiceResult}
 
 import scala.concurrent.Future
@@ -37,7 +37,7 @@ trait DefaultNewsRepositoryComponent extends NewsRepositoryComponent {
       News(tuple._1, tuple._2, tuple._3, Some(new DateTime(tuple._4.toLong)))
     }
 
-    override def all(implicit user: Auth0UserProfile): Future[ServiceResult[List[News]]] = {
+    override def all(implicit user: Auth0SecurityUser): Future[ServiceResult[List[News]]] = {
       println(user)
       Cypher(
         s"""
@@ -53,11 +53,11 @@ trait DefaultNewsRepositoryComponent extends NewsRepositoryComponent {
       })
     }
 
-    override def one(id: String)(implicit user: Auth0UserProfile): Future[ServiceResult[News]] = ???
+    override def one(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[News]] = ???
 
-    override def create(value: News)(implicit user: Auth0UserProfile): Future[ServiceResult[News]] = createOrUpdate(value)
+    override def create(value: News)(implicit user: Auth0SecurityUser): Future[ServiceResult[News]] = createOrUpdate(value)
 
-    override def update(id: String, value: News)(implicit user: Auth0UserProfile): Future[ServiceResult[News]] = {
+    override def update(id: String, value: News)(implicit user: Auth0SecurityUser): Future[ServiceResult[News]] = {
       if (id == value.id) {
         createOrUpdate(value)
       } else {
@@ -65,7 +65,7 @@ trait DefaultNewsRepositoryComponent extends NewsRepositoryComponent {
       }
     }
 
-    override def delete(id: String)(implicit user: Auth0UserProfile): Future[ServiceResult[Unit]] = ???
+    override def delete(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[Unit]] = ???
 
 
     private def createOrUpdate(value: News): Future[ServiceResult[News]] = {

@@ -1,4 +1,4 @@
-package utils.security
+package utils.auth0
 
 import org.joda.time.DateTime
 
@@ -6,7 +6,8 @@ import org.joda.time.DateTime
   * @author michaeldohr
   * @since 19/02/16
   */
-case class Auth0UserProfile(email: String,
+case class Auth0UserProfile(user_id: String,
+                            email: String,
                             name: Option[String] = None,
                             given_name: Option[String] = None,
                             family_name: Option[String] = None,

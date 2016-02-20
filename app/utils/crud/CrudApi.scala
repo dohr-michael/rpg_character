@@ -1,4 +1,4 @@
-package utils.apis
+package utils.crud
 
 import org.joda.time.DateTime
 import play.api.libs.json.{Format, _}
@@ -6,9 +6,9 @@ import play.api.mvc.{Action, AnyContent, Controller, Result}
 import play.api.routing.Router._
 import play.api.routing.SimpleRouter
 import play.api.routing.sird._
+import utils.auth0.Auth0SecuredApi
+import utils.crud.CrudRepository
 import utils.json.ApiFormat
-import utils.repositories.CrudRepository
-import utils.security.Auth0SecuredApi
 import utils.services.{ServiceController, ServiceFailure, ServiceSuccess}
 
 /**

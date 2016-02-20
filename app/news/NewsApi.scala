@@ -5,9 +5,8 @@ import javax.inject.Inject
 import app.RpgApp
 import play.api.libs.json.{Format, Json}
 import play.api.mvc.Controller
-import utils.apis.CrudApi
-import utils.repositories.CrudRepository
-import utils.security.Auth0SecurityService
+import utils.crud.{CrudRepository, CrudApi}
+import utils.auth0.Auth0ValidationService
 
 import scala.concurrent.ExecutionContext
 
@@ -23,7 +22,7 @@ class NewsApi @Inject()(val rpgApp: RpgApp) extends Controller with CrudApi[News
   }
 
   override implicit val ec: ExecutionContext = rpgApp.ec
-  override val securityService: Auth0SecurityService = rpgApp.securityService
+  override val securityService: Auth0ValidationService = rpgApp.securityService
 
   override val formatter: Format[News] = Json.format[News]
   override val repository: CrudRepository[News] = rpgApp.newsRepository
