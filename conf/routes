@@ -2,5 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /            app.RpgAppApi.ready
-->         /news        news.NewsApi
+GET        /                  app.RpgAppApi.ready
+
+->         /activities        activities.ActivitiesApi

@@ -2,6 +2,7 @@ package utils.services
 
 import play.api.libs.json._
 import play.api.mvc.{Controller, Result}
+
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -56,7 +57,6 @@ trait ServiceController {
     }
     case ServiceFailure(err) => err: Result
   }
-
 
 
   /**

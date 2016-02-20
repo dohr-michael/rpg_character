@@ -7,7 +7,6 @@ import play.api.routing.Router._
 import play.api.routing.SimpleRouter
 import play.api.routing.sird._
 import utils.auth0.Auth0SecuredApi
-import utils.crud.CrudRepository
 import utils.json.ApiFormat
 import utils.services.{ServiceController, ServiceFailure, ServiceSuccess}
 

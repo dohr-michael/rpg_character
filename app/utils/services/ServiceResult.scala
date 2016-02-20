@@ -1,7 +1,7 @@
 package utils.services
 
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
-import concurrent.{Future, ExecutionContext}
 
 object ServiceResult {
   def unit[A](value: A): ServiceResult[A] = ServiceSuccess(value)
@@ -18,7 +18,7 @@ object ServiceResult {
 
   def ofOpt[A](opt: Option[A]): ServiceResult[A] = opt.fold(failed[A](NotFoundError()))(unit)
 
-  def sequence[A](serviceResults: Seq[ServiceResult[A]]): ServiceResult[Seq[A]] = serviceResults.foldLeft(ServiceResult.unit(Seq.empty[A])){ (acc, cur) =>
+  def sequence[A](serviceResults: Seq[ServiceResult[A]]): ServiceResult[Seq[A]] = serviceResults.foldLeft(ServiceResult.unit(Seq.empty[A])) { (acc, cur) =>
     for {
       a <- acc
       c <- cur
@@ -29,7 +29,7 @@ object ServiceResult {
 
   def sequenceF[A](futureServiceResults: Seq[Future[ServiceResult[A]]])
                   (implicit ec: ExecutionContext): Future[ServiceResult[Seq[A]]] = Future.sequence(futureServiceResults).map { serviceResults =>
-    serviceResults.foldLeft(ServiceResult.unit(Seq.empty[A])){ (acc, cur) =>
+    serviceResults.foldLeft(ServiceResult.unit(Seq.empty[A])) { (acc, cur) =>
       for {
         a <- acc
         c <- cur
@@ -46,8 +46,9 @@ object ServiceResult {
     }
   }
 
-  def ofFuture[A](value: Future[A])( implicit ec: ExecutionContext ): Future[ServiceResult[A]] = value.map(ServiceResult.unit)
-  def ofFutureOpt[A](value: Future[Option[A]])( implicit ec: ExecutionContext ): Future[ServiceResult[A]] = value.map(ServiceResult.ofOpt)
+  def ofFuture[A](value: Future[A])(implicit ec: ExecutionContext): Future[ServiceResult[A]] = value.map(ServiceResult.unit)
+
+  def ofFutureOpt[A](value: Future[Option[A]])(implicit ec: ExecutionContext): Future[ServiceResult[A]] = value.map(ServiceResult.ofOpt)
 }
 
 /**
@@ -74,7 +75,9 @@ case class ForbiddenError(message: Seq[String] = Seq.empty) extends ServiceError
 trait SuccessAddition
 
 case class ObjectCreated[T](id: T) extends SuccessAddition
+
 case object ObjectsCreated extends SuccessAddition
+
 case class ObjectDeleted[T](id: T) extends SuccessAddition
 
 case class SuccessWarnings(warns: Seq[String]) extends SuccessAddition
@@ -141,7 +144,7 @@ sealed trait ServiceResult[+A] {
     * Applies fn to the underlying object. fn returns a Future.
     * @param fn the function to apply
     */
-  def mapF[B](fn: A => Future[B])(implicit ec: ExecutionContext ): Future[ServiceResult[B]] = {
+  def mapF[B](fn: A => Future[B])(implicit ec: ExecutionContext): Future[ServiceResult[B]] = {
     serviceError.fold[Future[ServiceResult[B]]](fn(get).map(b => map(_ => b)))(e => Future.successful(ServiceFailure(e)))
   }
 }

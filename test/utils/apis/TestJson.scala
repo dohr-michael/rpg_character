@@ -1,6 +1,6 @@
 package utils.apis
 
-import news.News
+import activities.Activities
 import org.joda.time.DateTime
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsString, Json}
@@ -38,7 +38,7 @@ trait TestJsonConf extends ApiFormat with JsonUtils {
   }
 
 
-  val formatter = extend("id" -> "heuuu") andThen Json.format[News]
+  val formatter = extend("id" -> "heuuu") andThen Json.format[Activities]
 
 
 }

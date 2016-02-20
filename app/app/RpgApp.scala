@@ -1,8 +1,8 @@
 package app
 
+import activities.{ActivitiesRepositoryComponent, DefaultActivitiesRepositoryComponent}
 import com.google.inject.{ImplementedBy, Singleton}
 import context.{Futures, Neo4jConfigurations, PlayApp, WebServiceClient}
-import news.{DefaultNewsRepositoryComponent, NewsRepositoryComponent}
 import org.anormcypher.Neo4jREST
 import play.api.libs.ws.ning.NingWSClient
 import play.api.{Application, Play}
@@ -20,7 +20,7 @@ trait RpgApp
   with Futures
   with Auth0SecurityComponent
   with Auth0DetailsApiComponent
-  with NewsRepositoryComponent
+  with ActivitiesRepositoryComponent
 
 trait Injector
   extends PlayApp
@@ -51,5 +51,5 @@ class DefaultRpgApp
   extends Injector
   with DefaultAuth0SecurityComponent
   with DefaultAuth0DetailsApiComponent
-  with DefaultNewsRepositoryComponent
+  with DefaultActivitiesRepositoryComponent
   with RpgApp

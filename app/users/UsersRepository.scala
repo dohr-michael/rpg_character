@@ -3,7 +3,7 @@ package users
 import context.{Futures, Neo4jConfigurations}
 import org.anormcypher.CypherParser._
 import org.anormcypher.{Cypher, NeoNode}
-import utils.auth0.{Auth0SecurityUser, Auth0UserProfile}
+import utils.auth0.Auth0SecurityUser
 import utils.crud.CrudRepository
 import utils.services.ServiceResult
 

@@ -1,6 +1,6 @@
 package utils.crud
 
-import utils.auth0.{Auth0SecurityUser, Auth0UserProfile}
+import utils.auth0.Auth0SecurityUser
 import utils.services.ServiceResult
 
 import scala.concurrent.Future

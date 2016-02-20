@@ -1,7 +1,7 @@
 package utils.json
 
 import org.joda.time.DateTime
-import play.api.libs.json.{Writes, Reads, Format}
+import play.api.libs.json.{Format, Reads, Writes}
 
 /**
   * @author michaeldohr
@@ -10,7 +10,7 @@ import play.api.libs.json.{Writes, Reads, Format}
 trait ApiFormat {
   val apiDateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
-  implicit val dateTimeFormat:Format[DateTime] = Format[DateTime](Reads.jodaDateReads(apiDateTimePattern), Writes.jodaDateWrites(apiDateTimePattern))
+  implicit val dateTimeFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(apiDateTimePattern), Writes.jodaDateWrites(apiDateTimePattern))
 }
 
 object ApiFormat extends ApiFormat
