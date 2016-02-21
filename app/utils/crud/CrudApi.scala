@@ -2,10 +2,7 @@ package utils.crud
 
 import org.joda.time.DateTime
 import play.api.libs.json.{Format, _}
-import play.api.mvc.{Action, AnyContent, Controller, Result}
-import play.api.routing.Router._
-import play.api.routing.SimpleRouter
-import play.api.routing.sird._
+import play.api.mvc._
 import utils.auth0.Auth0SecuredApi
 import utils.json.ApiFormat
 import utils.services.{ServiceController, ServiceFailure, ServiceSuccess}
@@ -14,7 +11,7 @@ import utils.services.{ServiceController, ServiceFailure, ServiceSuccess}
   * @author michaeldohr
   * @since 14/02/16
   */
-trait CrudApi[T <: CrudModel] extends Auth0SecuredApi with ServiceController with ApiFormat with SimpleRouter {
+trait CrudApi[T <: CrudModel] extends Auth0SecuredApi with ServiceController with ApiFormat {
   self: Controller =>
 
   val formatter: Format[T]
@@ -53,15 +50,4 @@ trait CrudApi[T <: CrudModel] extends Auth0SecuredApi with ServiceController wit
       case ServiceFailure(x) => x: Result
     }
   }
-
-
-  override def routes: Routes = {
-    case GET(p"/") => all
-    case POST(p"/") => create
-    case GET(p"/$id") => one(id)
-    case PUT(p"/$id") => update(id)
-    case DELETE(p"/$id") => delete(id)
-  }
-
-
 }

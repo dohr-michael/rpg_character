@@ -2,6 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /                  app.RpgAppApi.ready
+GET           /                      app.RpgAppApi.ready
 
-->         /activities        activities.ActivitiesApi
+GET           /activities            activities.ActivitiesApi.all
+POST          /activities            activities.ActivitiesApi.create
+GET           /activities/:id        activities.ActivitiesApi.one(id)
+PUT           /activities/:id        activities.ActivitiesApi.update(id)
+DELETE        /activities/:id        activities.ActivitiesApi.delete(id)
+
+
+GET           /chronicles            chronicles.ChroniclesApi.all
+POST          /chronicles            chronicles.ChroniclesApi.create
+GET           /chronicles/:id        chronicles.ChroniclesApi.one(id)
+PUT           /chronicles/:id        chronicles.ChroniclesApi.update(id)
+DELETE        /chronicles/:id        chronicles.ChroniclesApi.delete(id)

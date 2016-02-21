@@ -32,7 +32,7 @@ trait DefaultActivitiesRepositoryComponent extends ActivitiesRepositoryComponent
     private val ReturnDeclaration = "news.id as id, news.title as title, news.content as content, news.creationDate as creationDate"
     private val ReturnMapper = str("id") ~ str("title") ~ str("content") ~ get[BigDecimal]("creationDate")
 
-    def tupleToNews(tuple: (String, String, String, BigDecimal)): Activities = {
+    def tupleToActivity(tuple: (String, String, String, BigDecimal)): Activities = {
       Logger.info(tuple.toString())
       Activities(tuple._1, tuple._2, tuple._3, Some(new DateTime(tuple._4.toLong)))
     }
@@ -47,11 +47,18 @@ trait DefaultActivitiesRepositoryComponent extends ActivitiesRepositoryComponent
       ).asAsync {
         ReturnMapper *
       }.map(items => {
-        ServiceResult.unit(items.map(flatten).map(tupleToNews))
+        ServiceResult.unit(items.map(flatten).map(tupleToActivity))
       })
     }
 
-    override def one(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[Activities]] = ???
+    override def one(id: String)(implicit user: Auth0SecurityUser): Future[ServiceResult[Activities]] = {
+      Cypher(
+        s"""
+            MATCH (
+         """
+      )
+      ???
+    }
 
     override def create(value: Activities)(implicit user: Auth0SecurityUser): Future[ServiceResult[Activities]] = createOrUpdate(value)
 
@@ -75,7 +82,7 @@ trait DefaultActivitiesRepositoryComponent extends ActivitiesRepositoryComponent
         """).on("id" -> value.id, "title" -> value.title, "content" -> value.content).asAsync {
         ReturnMapper *
       }.map(items => {
-        ServiceResult.ofOpt(items.map(flatten).map(tupleToNews).headOption)
+        ServiceResult.ofOpt(items.map(flatten).map(tupleToActivity).headOption)
       })
     }
   }

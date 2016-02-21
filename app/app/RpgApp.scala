@@ -1,6 +1,7 @@
 package app
 
 import activities.{ActivitiesRepositoryComponent, DefaultActivitiesRepositoryComponent}
+import chronicles.{ChroniclesRepositoryComponent, DefaultChroniclesRepositoryComponent}
 import com.google.inject.{ImplementedBy, Singleton}
 import context.{Futures, Neo4jConfigurations, PlayApp, WebServiceClient}
 import org.anormcypher.Neo4jREST
@@ -18,9 +19,11 @@ import scala.concurrent.ExecutionContext
 trait RpgApp
   extends PlayApp
   with Futures
+  with AppFormats
   with Auth0SecurityComponent
   with Auth0DetailsApiComponent
   with ActivitiesRepositoryComponent
+  with ChroniclesRepositoryComponent
 
 trait Injector
   extends PlayApp
@@ -52,4 +55,5 @@ class DefaultRpgApp
   with DefaultAuth0SecurityComponent
   with DefaultAuth0DetailsApiComponent
   with DefaultActivitiesRepositoryComponent
+  with DefaultChroniclesRepositoryComponent
   with RpgApp

@@ -6,13 +6,14 @@ import java.util
 import com.auth0.jwt.JWTVerifier
 import context.Futures
 import org.apache.commons.codec.binary.Base64
+import org.joda.time.DateTime
 import utils.services.{ServiceResult, UnauthorizedError}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Success, Try}
 
 
-case class Jwt(iss: String, sub: String, aud: String, exp: Int, iat: Int)
+case class Jwt(iss: String, sub: String, aud: String, exp: DateTime, iat: DateTime)
 
 trait Auth0ValidationService {
 
@@ -35,15 +36,17 @@ class DefaultAuth0ValidationService(val clientId: String, val clientSecret: Stri
 
   private def validateToken(jwt: String): ServiceResult[Jwt] = {
     Try(jwtVerifier.verify(jwt)) match {
-      case Success(props: util.Map[String, AnyRef]) => ServiceResult.unit(
-        Jwt(
-          props.get("iss").asInstanceOf[String],
-          props.get("sub").asInstanceOf[String],
-          props.get("aud").asInstanceOf[String],
-          props.get("exp").asInstanceOf[Int],
-          props.get("iat").asInstanceOf[Int]
+      case Success(props: util.Map[String, AnyRef]) => {
+        ServiceResult.unit(
+          Jwt(
+            props.get("iss").asInstanceOf[String],
+            props.get("sub").asInstanceOf[String],
+            props.get("aud").asInstanceOf[String],
+            new DateTime(props.get("exp").asInstanceOf[Int].toLong * 1000),
+            new DateTime(props.get("iat").asInstanceOf[Int].toLong * 1000)
+          )
         )
-      )
+      }
       case err => ServiceResult.failed(UnauthorizedError())
     }
   }
